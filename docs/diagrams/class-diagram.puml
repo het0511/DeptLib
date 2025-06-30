@@ -1,0 +1,91 @@
+@startuml Library Management System - Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam classFontSize 14
+skinparam classFontName Arial
+
+class User {
+  -id: String
+  -name: String
+  -email: String
+  -password: String
+  -role: Role
+  -transactionIds: Set<String>
+  +register()
+  +login()
+  +viewTransactions()
+}
+
+class Book {
+  -id: String
+  -title: String
+  -author: String
+  -description: String
+  -coverImage: String
+  -department: String
+  -price: BigDecimal
+  -availableForPurchase: boolean
+  -availableForBorrow: boolean
+  -stock: int
+  -transactionIds: Set<String>
+}
+
+class Transaction {
+  -id: String
+  -userId: String
+  -bookId: String
+  -type: TransactionType
+  -date: LocalDate
+  -returnDate: LocalDate
+  -status: TransactionStatus
+  +generateQRCode()
+  +processReturn()
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum TransactionType {
+  PURCHASE
+  BORROW
+}
+
+enum TransactionStatus {
+  ACTIVE
+  RETURNED
+  COMPLETED
+}
+
+class AuthService {
+  +register(RegisterRequest)
+  +login(LoginRequest)
+  +getCurrentUser()
+}
+
+class BookService {
+  +getAllBooks()
+  +getBookById(String)
+  +searchBooks(String)
+  +getBooksByDepartment(String)
+}
+
+class TransactionService {
+  +purchaseBook(String, String)
+  +borrowBook(String, String)
+  +returnBook(String)
+  +getUserTransactions(String)
+}
+
+User "1" -- "*" Transaction : has
+Book "1" -- "*" Transaction : involves
+User "*" -- "1" Role : has
+Transaction "*" -- "1" TransactionType : has
+Transaction "*" -- "1" TransactionStatus : has
+
+AuthService ..> User : manages
+BookService ..> Book : manages
+TransactionService ..> Transaction : manages
+
+@enduml

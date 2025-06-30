@@ -1,0 +1,38 @@
+@startuml Library Management System - Use Case Diagram
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor "User" as user
+actor "Admin" as admin
+
+rectangle "Library Management System" {
+  usecase "Register" as UC1
+  usecase "Login" as UC2
+  usecase "Browse Books" as UC3
+  usecase "Search Books" as UC4
+  usecase "Purchase Book" as UC5
+  usecase "Borrow Book" as UC6
+  usecase "Return Book" as UC7
+  usecase "View Transactions" as UC8
+  usecase "Manage Books" as UC9
+  usecase "View All Transactions" as UC10
+  usecase "Generate QR Code" as UC11
+}
+
+user --> UC1
+user --> UC2
+user --> UC3
+user --> UC4
+user --> UC5
+user --> UC6
+user --> UC7
+user --> UC8
+UC5 ..> UC11 : includes
+UC6 ..> UC11 : includes
+
+admin --> UC9
+admin --> UC10
+admin --|> user
+
+@enduml

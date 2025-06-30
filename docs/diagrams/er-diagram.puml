@@ -1,0 +1,47 @@
+@startuml Library Management System - ER Diagram
+
+!define table(x) class x << (T,#FFAAAA) >>
+!define primary_key(x) <u>x</u>
+!define foreign_key(x) <i>x</i>
+
+skinparam class {
+    BackgroundColor White
+    ArrowColor Black
+    BorderColor Black
+}
+
+table(Users) {
+    primary_key(id): String
+    name: String
+    email: String
+    password: String
+    role: Role
+}
+
+table(Books) {
+    primary_key(id): String
+    title: String
+    author: String
+    description: String
+    coverImage: String
+    department: String
+    price: BigDecimal
+    availableForPurchase: boolean
+    availableForBorrow: boolean
+    stock: int
+}
+
+table(Transactions) {
+    primary_key(id): String
+    foreign_key(userId): String
+    foreign_key(bookId): String
+    type: TransactionType
+    date: LocalDate
+    returnDate: LocalDate
+    status: TransactionStatus
+}
+
+Users ||--o{ Transactions
+Books ||--o{ Transactions
+
+@enduml

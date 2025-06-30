@@ -1,0 +1,45 @@
+@startuml Library Management System - Purchase Sequence Diagram
+
+actor User
+participant "Frontend" as FE
+participant "AuthService" as Auth
+participant "BookService" as Book
+participant "TransactionService" as Trans
+database "Database" as DB
+
+User -> FE: Select Book to Purchase
+activate FE
+
+FE -> Auth: Verify Authentication
+activate Auth
+Auth --> FE: Token Valid
+deactivate Auth
+
+FE -> Book: Check Book Availability
+activate Book
+Book -> DB: Query Stock
+activate DB
+DB --> Book: Stock Status
+deactivate DB
+Book --> FE: Available
+deactivate Book
+
+FE -> Trans: Process Purchase
+activate Trans
+Trans -> DB: Create Transaction
+activate DB
+DB --> Trans: Transaction Created
+deactivate DB
+Trans -> DB: Update Book Stock
+activate DB
+DB --> Trans: Stock Updated
+deactivate DB
+Trans --> FE: Purchase Successful
+deactivate Trans
+
+FE -> FE: Generate QR Code
+FE --> User: Display Purchase Confirmation & QR Code
+
+deactivate FE
+
+@enduml
